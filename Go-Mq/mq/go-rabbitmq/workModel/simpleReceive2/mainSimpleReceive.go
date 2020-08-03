@@ -1,8 +1,8 @@
 package main
 
-import rabbitmq2 "mq/go-rabbitmq/simpleModel/rabbitmq"
+import "go-rabbitmq/go-rabbitmq/workModel/rabbitmq"
 
 func main() {
-	rabbitmq :=rabbitmq2.NewRabbitMQSimple(""+"fws")
+	rabbitmq :=rabbitmq.NewRabbitMQSimple(""+"fws")
 	rabbitmq.ConsumeSimple()
 }

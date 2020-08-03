@@ -5,11 +5,11 @@ import (
 	"strconv"
 	"time"
 
-	rabbitmq2 "mq/go-rabbitmq/simpleModel/rabbitmq"
+	"go-rabbitmq/go-rabbitmq/workModel/rabbitmq"
 )
 
 func main() {
- 	rabbitmq :=rabbitmq2.NewRabbitMQSimple(""+"fws")
+ 	rabbitmq :=rabbitmq.NewRabbitMQSimple(""+"fws")
  	for i := 0;i <= 100;i++ {
  		rabbitmq.PublishSimple("hello fws" + strconv.Itoa(i))
  		time.Sleep(1 * time.Second)
