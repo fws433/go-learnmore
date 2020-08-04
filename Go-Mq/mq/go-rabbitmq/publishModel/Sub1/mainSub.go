@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	rabbitmq :=rabbitmq.NewRabbitMQPubSub(""+"newProduct")
+	rabbitmq :=rabbitmq.NewRabbitMQPubSub("logs")
 	rabbitmq.ReceiveSub()
 }

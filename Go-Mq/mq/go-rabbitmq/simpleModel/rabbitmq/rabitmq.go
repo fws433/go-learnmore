@@ -52,7 +52,7 @@ func NewRabbitMQSimple (queueName string) *RabbitMQ {
 	//获取connection
 	rabbitmq.conn,err=amqp.Dial(rabbitmq.Mqurl)
 	rabbitmq.failOnErr(err,"failed to connect rabb"+"itmq!")
-	//获取channel
+	//获取channel,通道绑定对应的队列
 	rabbitmq.channel,err=rabbitmq.conn.Channel()
 	rabbitmq.failOnErr(err,"failed to open a channel")
 	return rabbitmq
@@ -60,14 +60,15 @@ func NewRabbitMQSimple (queueName string) *RabbitMQ {
 
 //直接模式队列生产
 func (r *RabbitMQ) PublishSimple(message string) {
-	//1.申请队列，如果队列不存在会自动创建，存在则跳过创建
+	//1.申请队列，通道绑定对应的队列
 		_,err :=r.channel.QueueDeclare(
+			//如果队列不存在会自动创建，存在则跳过创建；
 			r.QueueName,
 			//是否持久化
 			false,
-			//是否自动删除
+			//是否自动删除队列
 			false,
-			//是否具有排他性
+			//是否具有排他性（当前连接是否独占队列）
 			false,
 			//是否阻塞处理，
 			false,
@@ -78,8 +79,9 @@ func (r *RabbitMQ) PublishSimple(message string) {
 			fmt.Println(err)
 		}
 
-		//调用channel发送消息到队列中
+		//调用channel发送消息到队列中（发布消息）
 		r.channel.Publish(
+			//交换机名称
 			r.Exchange,
 			r.QueueName,
 			// //如果为true，根据自身exchange类型和routekey规则无法找到符合条件的队列会把消息返还给发送者
